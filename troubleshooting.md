@@ -327,13 +327,13 @@ gh pr create --title "My changes" --body "Description"
 
 **Problem**: Push fails with error referencing old repo name  
 ```bash
-error: failed to push some refs to 'github.com:DaniBunny/Fabric-DE-git-CI-CD-pr.git'
+error: failed to push some refs to 'github.com:DaniBunny/Fabric-DE-CICD.git'
 ```
 
 **Solution**:
 ```bash
 # Update remote to new repository name
-git remote set-url origin git@github.com:DaniBunny/Fabric-DE-git-CI-CD-pr.git
+git remote set-url origin git@github.com:DaniBunny/Fabric-DE-CICD.git
 
 # Verify remote URL
 git remote -v
@@ -347,7 +347,7 @@ git push origin main
 **Problem**: Push fails with `src refspec <branch> does not match any`
 ```bash
 error: src refspec improvements does not match any
-error: failed to push some refs to 'github.com:DaniBunny/Fabric-DE-git-CI-CD-pr.git'
+error: failed to push some refs to 'github.com:DaniBunny/Fabric-DE-CICD.git'
 ```
 
 **Solution**:

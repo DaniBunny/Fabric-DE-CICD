@@ -1,0 +1,66 @@
+{
+    "properties": {
+        "jobMode": "Batch",
+        "source": {
+            "type": "Parquet",
+            "connectionSettings": {
+                "type": "AzureBlobStorage",
+                "typeProperties": {
+                    "containerUri": "https://azureopendatastorage.blob.core.windows.net/holidaydatacontainer"
+                }
+            }
+        },
+        "destination": {
+            "type": "LakehouseTable",
+            "connectionSettings": {
+                "type": "Lakehouse",
+                "typeProperties": {
+                    "workspaceId": "8e0cc78d-1667-4e88-9523-a04c1d5dd187",
+                    "artifactId": "3ad63567-2849-4e5b-9cf2-eacd059e50a5",
+                    "rootFolder": "Tables"
+                }
+            }
+        },
+        "policy": {
+            "timeout": "0.12:00:00"
+        }
+    },
+    "activities": [
+        {
+            "id": "f9217aed-6f64-454e-a790-76b433cb003a",
+            "properties": {
+                "source": {
+                    "datasetSettings": {
+                        "location": {
+                            "type": "AzureBlobStorageLocation",
+                            "folderPath": "Processed",
+                            "container": "holidaydatacontainer"
+                        },
+                        "compressionCodec": "snappy"
+                    },
+                    "storeSettings": {
+                        "recursive": false,
+                        "wildcardFileName": "*.parquet"
+                    }
+                },
+                "destination": {
+                    "writeBehavior": "Append",
+                    "datasetSettings": {
+                        "schema": "dbo",
+                        "table": "t3_prod"
+                    }
+                },
+                "enableStaging": false,
+                "translator": {
+                    "type": "TabularTranslator"
+                },
+                "typeConversionSettings": {
+                    "typeConversion": {
+                        "allowDataTruncation": true,
+                        "treatBooleanAsNumber": false
+                    }
+                }
+            }
+        }
+    ]
+}

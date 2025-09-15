@@ -1,0 +1,210 @@
+table t1
+	lineageTag: ab446cdc-058b-4f4c-9cb5-c10dfedecb71
+	sourceLineageTag: [dbo].[t1]
+
+	column AGE
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 272eca27-2c15-4c52-ba3e-c00d44c2b0bc
+		sourceLineageTag: AGE
+		summarizeBy: none
+		sourceColumn: AGE
+
+		changedProperty = SummarizeBy
+
+		annotation SummarizationSetBy = User
+
+	column SEX
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 331dcc08-c4d7-4d16-bb40-780ca765b1ed
+		sourceLineageTag: SEX
+		summarizeBy: none
+		sourceColumn: SEX
+
+		changedProperty = SummarizeBy
+
+		annotation SummarizationSetBy = User
+
+	column BMI
+		dataType: double
+		sourceProviderType: float
+		lineageTag: 8c968ffc-3d23-4c46-a859-0be75725ca27
+		sourceLineageTag: BMI
+		summarizeBy: average
+		sourceColumn: BMI
+
+		changedProperty = SummarizeBy
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column BP
+		dataType: double
+		sourceProviderType: float
+		lineageTag: e7e4e5cd-7de5-4c4d-bb17-4bb3467f8616
+		sourceLineageTag: BP
+		summarizeBy: average
+		sourceColumn: BP
+
+		changedProperty = SummarizeBy
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column S1
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 9fd75ba1-a0ee-41c4-9432-472828273c05
+		sourceLineageTag: S1
+		summarizeBy: sum
+		sourceColumn: S1
+
+		annotation SummarizationSetBy = Automatic
+
+	column S2
+		dataType: double
+		sourceProviderType: float
+		lineageTag: 9d692ac8-d8d0-4677-b6be-a27c006ed847
+		sourceLineageTag: S2
+		summarizeBy: sum
+		sourceColumn: S2
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column S3
+		dataType: double
+		sourceProviderType: float
+		lineageTag: 9020843d-6595-4eb5-bf70-a54fbef2ad42
+		sourceLineageTag: S3
+		summarizeBy: sum
+		sourceColumn: S3
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column S4
+		dataType: double
+		sourceProviderType: float
+		lineageTag: d770b4ce-ec01-4792-848e-654a9e372dd5
+		sourceLineageTag: S4
+		summarizeBy: sum
+		sourceColumn: S4
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column S5
+		dataType: double
+		sourceProviderType: float
+		lineageTag: 4e4fd9f9-4eda-4f24-8777-0314e91d5c2c
+		sourceLineageTag: S5
+		summarizeBy: sum
+		sourceColumn: S5
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column S6
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 42e282e3-f2bf-4a85-b872-fc4468dfecac
+		sourceLineageTag: S6
+		summarizeBy: sum
+		sourceColumn: S6
+
+		annotation SummarizationSetBy = Automatic
+
+	column Y
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 7563161b-cb8e-4450-a908-ce64c8c5e6c1
+		sourceLineageTag: Y
+		summarizeBy: sum
+		sourceColumn: Y
+
+		annotation SummarizationSetBy = Automatic
+
+	column countryOrRegion
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 2c5d736a-9dea-45e3-baf7-5c0bfb2d7b95
+		sourceLineageTag: countryOrRegion
+		summarizeBy: none
+		sourceColumn: countryOrRegion
+
+		annotation SummarizationSetBy = Automatic
+
+	column holidayName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: fd359ba5-5ad6-4969-8ea5-d9625620f23b
+		sourceLineageTag: holidayName
+		summarizeBy: none
+		sourceColumn: holidayName
+
+		annotation SummarizationSetBy = Automatic
+
+	column normalizeHolidayName
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 7c5a520a-0621-4ad1-96af-c92ed7f31f33
+		sourceLineageTag: normalizeHolidayName
+		summarizeBy: none
+		sourceColumn: normalizeHolidayName
+
+		annotation SummarizationSetBy = Automatic
+
+	column isPaidTimeOff
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: e3dac999-81e9-4254-afb5-2e830ad89677
+		sourceLineageTag: isPaidTimeOff
+		summarizeBy: none
+		sourceColumn: isPaidTimeOff
+
+		annotation SummarizationSetBy = Automatic
+
+	column countryRegionCode
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 1fa63108-24b8-461b-86e7-b803b3e3874d
+		sourceLineageTag: countryRegionCode
+		summarizeBy: none
+		sourceColumn: countryRegionCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column date
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: 892f9f15-dd64-474e-b61a-9c2b45cf3d29
+		sourceLineageTag: date
+		summarizeBy: none
+		sourceColumn: date
+
+		annotation SummarizationSetBy = Automatic
+
+	partition t1 = entity
+		mode: directLake
+		source
+			entityName: t1
+			schemaName: dbo
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

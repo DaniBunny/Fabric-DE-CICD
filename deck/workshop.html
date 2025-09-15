@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mastering Data Engineering Git and CI/CD in Microsoft Fabric | European Microsoft Fabric Community Conference</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/dist/theme/white.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/plugin/highlight/monokai.css">
+    <style>
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .reveal .slides section.present {
+            animation: fadeIn 0.6s ease-in-out;
+        }
+
+        .reveal .slides section.present h2 {
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .reveal .slides section.present .module-item {
+            animation: slideInLeft 0.6s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .reveal .slides section.present .module-item:nth-child(1) { animation-delay: 0.1s; }
+        .reveal .slides section.present .module-item:nth-child(2) { animation-delay: 0.2s; }
+        .reveal .slides section.present .module-item:nth-child(3) { animation-delay: 0.3s; }
+        .reveal .slides section.present .module-item:nth-child(4) { animation-delay: 0.4s; }
+
+        .reveal .slides section.present .stat-card {
+            animation: fadeInUp 0.6s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .reveal .slides section.present .stat-card:nth-child(1) { animation-delay: 0.1s; }
+        .reveal .slides section.present .stat-card:nth-child(2) { animation-delay: 0.2s; }
+        .reveal .slides section.present .stat-card:nth-child(3) { animation-delay: 0.3s; }
+        .reveal .slides section.present .stat-card:nth-child(4) { animation-delay: 0.4s; }
+
+        .reveal .slides section.present .objective-item {
+            animation: fadeInUp 0.5s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .reveal .slides section.present .objective-item:nth-child(1) { animation-delay: 0.1s; }
+        .reveal .slides section.present .objective-item:nth-child(2) { animation-delay: 0.15s; }
+        .reveal .slides section.present .objective-item:nth-child(3) { animation-delay: 0.2s; }
+        .reveal .slides section.present .objective-item:nth-child(4) { animation-delay: 0.25s; }
+        .reveal .slides section.present .objective-item:nth-child(5) { animation-delay: 0.3s; }
+        .reveal .slides section.present .objective-item:nth-child(6) { animation-delay: 0.35s; }
+
+        :root {
+            /* Main Brand Color */
+            --primary-green: #0c695a;
+            --primary-green-light: #0e7e6b;
+            --primary-green-dark: #0a5448;
+            --accent-teal: #0891B2;
+            --accent-orange: #EA580C;
+
+            /* Neutrals */
+            --dark: #0F172A;
+            --dark-gray: #1E293B;
+            --medium-gray: #64748B;
+            --light-gray: #F1F5F9;
+            --white: #FFFFFF;
+
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, #0c695a 0%, #0e7e6b 100%);
+            --gradient-accent: linear-gradient(135deg, #0891B2 0%, #0c695a 100%);
+            --gradient-hero: linear-gradient(135deg, #0a5448 0%, #0c695a 100%);
+        }
+
+        .reveal {
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .reveal .display-font {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .reveal .slides section {
+            text-align: left;
+            height: 700px !important;
+            overflow-y: auto !important;
+            overflow-x: hidden !important;
+            box-sizing: border-box !important;
+        }
+
+        /* Make slides scrollable */
+        .reveal .slides > section.present {
+            overflow-y: auto !important;
+            height: 700px !important;
+        }
+
+        /* Custom scrollbar styling */
+        .reveal .slides section::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .reveal .slides section::-webkit-scrollbar-track {
+            background: rgba(12, 105, 90, 0.05);
+            border-radius: 4px;
+        }
+
+        .reveal .slides section::-webkit-scrollbar-thumb {
+            background: var(--gradient-primary);
+            border-radius: 4px;
+        }
+
+        .reveal .slides section::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-green-dark);
+        }
+
+        /* Ensure content doesn't get cut off */
+        .reveal .slides {
+            height: 100%;
+        }
+
+        /* Visual indicator for scrollable content */
+        .reveal .slides section.has-overflow::after {
+            content: '↓ Scroll for more ↓';
+            position: fixed;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gradient-primary);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            animation: bounce 2s infinite;
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
+
+        /* Hide scroll indicator when scrolled */
+        .reveal .slides section.scrolled::after {
+            display: none;
+        }
+
+        .reveal h1, .reveal h2, .reveal h3 {
+            font-family: 'Poppins', sans-serif;
+            color: var(--dark);
+            text-transform: none;
+            line-height: 1.2;
+        }
+
+        .reveal h1 {
+            font-size: 48px;
+            line-height: 56px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 0.5em;
+            background: linear-gradient(90deg, var(--primary-green-dark) 0%, var(--primary-green) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .reveal h2 {
+            font-size: 36px;
+            line-height: 44px;
+            font-weight: 600;
+            border-bottom: 2px solid var(--gradient-primary);
+            padding-bottom: 0.4em;
+            margin-bottom: 0.8em;
+            background: linear-gradient(90deg, var(--primary-green-dark) 0%, var(--primary-green) 50%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .reveal h3 {
+            font-size: 24px;
+            line-height: 32px;
+            font-weight: 600;
+            margin-bottom: 0.6em;
+            color: var(--primary-green);
+        }
+
+        .reveal p {
+            font-size: 18px;
+            line-height: 28px;
+            font-weight: 400;
+            color: var(--dark);
+            letter-spacing: 0;
+        }
+
+        .reveal li {
+            font-size: 16px;
+            line-height: 24px;
+            font-weight: 400;
+            color: var(--dark);
+            margin-bottom: 12px;
+        }
+
+        .reveal ul, .reveal ol {
+            margin: 0.5em 0;
+        }
+
+        .reveal li {
+            margin-bottom: 0.3em;
+        }
+
+        .reveal .title-slide {
+            text-align: center;
+            background: var(--gradient-hero);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .reveal .title-slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%230c695a" fill-opacity="0.1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,154.7C960,171,1056,181,1152,165.3C1248,149,1344,107,1392,85.3L1440,64L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"></path></svg>') no-repeat top;
+            background-size: cover;
+        }
+
+        .reveal .title-slide h1,
+        .reveal .title-slide h2,
+        .reveal .title-slide h3 {
+            color: white;
+            position: relative;
+            z-index: 1;
+        }
+
+        .reveal .title-slide h1 {
+            background: linear-gradient(90deg, #FFFFFF 0%, #0e7e6b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .workshop-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin: 20px auto;
+            max-width: 600px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 24px 16px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .stat-number {
+            font-size: 48px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #94A3B8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+        }
+
+        .module-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .module-item {
+            background: var(--white);
+            border-left: 3px solid var(--gradient-primary);
+            background-image: linear-gradient(white, white), var(--gradient-primary);
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
+            margin-bottom: 16px;
+        }
+
+        .module-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(12, 105, 90, 0.15);
+        }
+
+        .module-item strong {
+            color: var(--primary-green-dark);
+        }
+
+        .module-item ul {
+            margin: 5px 0;
+        }
+
+
+        .module-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .module-badge {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .module-duration {
+            color: var(--medium-gray);
+            font-size: 12px;
+            font-weight: 400;
+        }
+
+        .checkpoint {
+            background: var(--gradient-accent);
+            color: white;
+            padding: 20px;
+            border-radius: 16px;
+            text-align: center;
+            margin: 20px 0;
+            box-shadow: 0 8px 32px rgba(8, 145, 178, 0.2);
+        }
+
+        .checkpoint p {
+            color: white !important;
+        }
+
+        .checkpoint span {
+            color: rgba(255, 255, 255, 0.8) !important;
+        }
+
+        .checkpoint strong {
+            color: white !important;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .tool-card {
+            background: var(--white);
+            border: 1px solid rgba(12, 105, 90, 0.1);
+            border-radius: 16px;
+            padding: 28px;
+            text-align: center;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+        }
+
+        .tool-card strong {
+            font-size: 0.75em;
+        }
+
+        .tool-card p {
+            font-size: 13px;
+            line-height: 18px;
+        }
+
+        .tool-icon {
+            display: none;
+        }
+
+        .objectives-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 12px;
+            margin: 15px 0;
+        }
+
+        .objective-item {
+            background: var(--white);
+            border-left: 3px solid var(--gradient-primary);
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 16px;
+            line-height: 24px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            transition: transform 0.3s ease;
+        }
+
+        .objective-item:hover {
+            transform: translateX(4px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+        }
+
+        .architecture-highlight {
+            background: rgba(251, 191, 36, 0.08);
+            border-left: 3px solid #fbbf24;
+            border-radius: 0;
+            padding: 16px;
+            margin: 20px 0;
+            box-shadow: none;
+        }
+
+        .architecture-highlight h3 {
+            color: var(--dark-text);
+        }
+
+        .architecture-highlight p {
+            color: var(--dark-text);
+        }
+
+        .reveal .progress {
+            background: var(--gradient-primary);
+            height: 4px;
+        }
+
+        .reveal .controls {
+            color: var(--primary-green);
+        }
+
+        .reveal .slide-number {
+            color: var(--primary-green);
+            background: transparent;
+            padding: 8px;
+            border-radius: 0;
+            font-size: 12px;
+            font-weight: 500;
+            left: 8px;
+            right: auto;
+            bottom: 8px;
+            letter-spacing: 0.02em;
+        }
+
+        .reveal .slide-number-a {
+            color: var(--primary-green);
+        }
+
+        .reveal .slide-number-delimiter {
+            margin: 0 3px;
+            opacity: 0.5;
+        }
+
+        .reveal blockquote {
+            border-left: 4px solid var(--primary-green);
+            background: rgba(12, 105, 90, 0.05);
+        }
+
+        .reveal pre code {
+            font-family: "SF Mono", "Monaco", "Consolas", monospace;
+            background: #1a1a1a;
+            color: #e2e8f0;
+            border-radius: 4px;
+            font-size: 13px;
+            line-height: 20px;
+            padding: 16px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .section-center {
+            text-align: center;
+        }
+
+        .highlight-box {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 32px;
+            border-radius: 20px;
+            text-align: center;
+            margin: 30px 0;
+            box-shadow: 0 12px 40px rgba(12, 105, 90, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .highlight-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .highlight-box h3 {
+            color: white;
+            margin-bottom: 12px;
+            font-size: 28px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .highlight-box p {
+            margin: 0;
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 18px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            align-items: start;
+        }
+
+        .reveal ul {
+            padding-left: 0;
+            list-style: none;
+        }
+
+        .reveal li:before {
+            content: "\2014";
+            position: absolute;
+            margin-left: -1.2em;
+            color: var(--primary-green);
+        }
+
+        .reveal li {
+            margin-bottom: 0.4em;
+        }
+
+        .reveal strong {
+            color: var(--primary-green-dark);
+            font-weight: 600;
+        }
+
+        .reveal em {
+            color: var(--medium-gray);
+            font-style: italic;
+        }
+
+        .reveal .slides section {
+            padding: 20px;
+        }
+
+        table {
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+
+        table td {
+            padding: 6px 8px;
+            border-bottom: 1px solid rgba(12, 105, 90, 0.1);
+        }
+
+        table tr:hover {
+            background: rgba(12, 105, 90, 0.03);
+        }
+
+
+        .reveal .progress {
+            height: 3px;
+        }
+
+        .reveal .controls {
+            opacity: 0.5;
+            transition: opacity 0.2s;
+        }
+
+        .reveal:hover .controls {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <!-- Title Slide -->
+            <section class="title-slide">
+                <div class="conference-badge" style="display: inline-flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 50px; padding: 8px 20px; margin-bottom: 24px;">
+                    <span class="badge-dot" style="width: 8px; height: 8px; background: #10B981; border-radius: 50%; animation: pulse 2s infinite;"></span>
+                    <span class="badge-text" style="color: white; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px;">European Microsoft Fabric Community Conference</span>
+                </div>
+                <h1>Mastering Data Engineering<br>Git and CI/CD in Microsoft Fabric</h1>
+                <h3 style="font-size: 20px; font-weight: 400; color: rgba(255, 255, 255, 0.9); margin-top: 20px;">Hands-On Professional Workshop</h3>
+                <div class="workshop-stats">
+                    <div class="stat-card">
+                        <div class="stat-number">8</div>
+                        <div class="stat-label">Modules</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">1</div>
+                        <div class="stat-label">Full Day</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">30+</div>
+                        <div class="stat-label">Exercises</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">100%</div>
+                        <div class="stat-label">Hands-On</div>
+                    </div>
+                </div>
+                <p style="font-size: 16px; margin-top: 32px; color: rgba(255, 255, 255, 0.85); line-height: 1.6; max-width: 800px; margin-left: auto; margin-right: auto;">
+                    Transform your data engineering practices with enterprise-grade version control and automated deployment pipelines
+                </p>
+            </section>
+
+            <!-- Welcome -->
+            <section>
+                <h2>Workshop Overview</h2>
+                <div class="highlight-box">
+                    <h3>Your Journey Today</h3>
+                    <p>From manual deployments to automated CI/CD excellence</p>
+                </div>
+                <div class="two-column">
+                    <div>
+                        <h3>Deliverables</h3>
+                        <ul>
+                            <li><strong>Medallion Architecture</strong>: Bronze → Silver → Gold layers</li>
+                            <li><strong>Version Control</strong>: Full Git integration</li>
+                            <li><strong>CI/CD Automation</strong>: Dev/test/prod deployments</li>
+                            <li><strong>Real-world Scenarios</strong>: Schema changes & migrations</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3>Target Audience</h3>
+                        <ul>
+                            <li>Data Engineers</li>
+                            <li>Data Architects</li>
+                            <li>DevOps Practitioners</li>
+                            <li>Analytics Teams</li>
+                        </ul>
+                        <div style="background: linear-gradient(135deg, #10B981 0%, #0c695a 100%); color: white; padding: 12px 20px; border-radius: 50px; font-size: 14px; font-weight: 600; text-align: center; margin-top: 16px;">No prior Fabric CI/CD experience required</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Prerequisites -->
+            <section>
+                <h2>Technical Prerequisites</h2>
+                <div class="two-column">
+                    <div>
+                        <h3>Technical Requirements</h3>
+                        <ul>
+                            <li>Microsoft Fabric Capacity (Trial/Premium)</li>
+                            <li>Git Repository Access (GitHub/Azure DevOps)</li>
+                            <li>Python 3.8+ installed</li>
+                            <li>Git command line tools</li>
+                            <li>VS Code or preferred IDE</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3>Permissions Required</h3>
+                        <ul>
+                            <li>Fabric workspace admin rights</li>
+                            <li>Repository write access</li>
+                            <li>Azure DevOps project access</li>
+                        </ul>
+                        <div class="checkpoint" style="margin-top: 20px;">
+                            <strong style="text-transform: uppercase; letter-spacing: 0.5px; font-size: 14px; color: white;">⚠️ Important</strong>
+                            <p style="margin: 8px 0 0 0; color: white; font-size: 16px;">Verify all prerequisites before starting</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Learning Objectives -->
+            <section>
+                <h2>Key Learning Outcomes</h2>
+                <div class="section-center">
+                    <p style="color: var(--primary-green); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-size: 14px; margin-bottom: 12px;">LEARNING OUTCOMES</p>
+                    <h3 style="font-size: 32px; margin-bottom: 32px;">What You'll Achieve Today</h3>
+                </div>
+                <div class="objectives-list">
+                    <div class="objective-item">
+                        Architect production solutions using Fabric's native Git integration
+                    </div>
+                    <div class="objective-item">
+                        Implement version control with enterprise-grade bi-directional sync
+                    </div>
+                    <div class="objective-item">
+                        Design parameterized deployments for multi-environment architectures
+                    </div>
+                    <div class="objective-item">
+                        Orchestrate automated pipelines for seamless code and schema migrations
+                    </div>
+                    <div class="objective-item">
+                        Acquire production templates ready for immediate implementation
+                    </div>
+                    <div class="objective-item">
+                        Execute complex migrations using industry-proven patterns
+                    </div>
+                </div>
+            </section>
+
+            <!-- Solution Architecture -->
+            <section>
+                <h2>Technical Architecture Overview</h2>
+                <div class="architecture-highlight">
+                    <h3>Implementation Scope</h3>
+                    <p>Enterprise-scale medallion architecture with comprehensive DevOps automation</p>
+                </div>
+                <div class="two-column">
+                    <div>
+                        <h3>Architecture Components</h3>
+                        <ul>
+                            <li>2 Lakehouses — Bronze (raw) and Silver (processed)</li>
+                            <li>3 Spark Notebooks — Data transformation logic</li>
+                            <li>1 Data Pipeline — Orchestration and scheduling</li>
+                            <li>1 Semantic Model — Business logic layer</li>
+                            <li>1 Power BI Report — End-user analytics</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3>Technical Stack</h3>
+                        <div class="tools-grid">
+                            <div class="tool-card">
+                                <div class="tool-icon">CLI</div>
+                                <strong>fabric-cli</strong>
+                                <p>Command-line automation</p>
+                            </div>
+                            <div class="tool-card">
+                                <div class="tool-icon">PKG</div>
+                                <strong>fabric-cicd</strong>
+                                <p>DevOps best practices</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Workshop Timeline - Morning -->
+            <section>
+                <h2>Session 1: Foundation</h2>
+                <h3>Infrastructure Setup (9:00 AM - 10:30 AM)</h3>
+                <div class="module-timeline">
+                    <div class="module-item">
+                        <div class="module-header">
+                            <span class="module-badge">Module 1</span>
+                            <span class="module-duration">30 minutes</span>
+                        </div>
+                        <strong style="font-size: 14px; font-weight: 500;">Environment Setup</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>Install fabric-cli tool</li>
+                            <li>Configure Fabric workspace</li>
+                            <li>Connect to Git repository</li>
+                            <li>Validate round-trip sync</li>
+                        </ul>
+                    </div>
+                    <div class="module-item">
+                        <div class="module-header">
+                            <span class="module-badge">Module 2</span>
+                            <span class="module-duration">30 minutes</span>
+                        </div>
+                        <strong style="font-size: 14px; font-weight: 500;">First Deployment</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>Deploy the baseline solution</li>
+                            <li>Explore medallion architecture</li>
+                            <li>Run initial data pipeline</li>
+                            <li>Verify Power BI report</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="checkpoint">
+                    <strong style="font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; color: white;">🎯 CHECKPOINT 1</strong>
+                    <p style="font-size: 16px; margin: 8px 0 0 0; color: rgba(255, 255, 255, 0.95);">All participants synchronized - Foundation deployed successfully</p>
+                </div>
+            </section>
+
+            <!-- Workshop Timeline - Advanced -->
+            <section>
+                <h2>Session 2: Advanced Concepts</h2>
+                <h3>Enterprise Deployment Patterns (11:00 AM - 1:00 PM)</h3>
+                <div class="module-timeline">
+                    <div class="module-item">
+                                                <div class="module-header">
+                            <span class="module-badge">Module 4</span>
+                            <span class="module-duration">60 minutes</span>
+                        </div>
+                        <strong style="font-size: 14px; font-weight: 500;">Branch Management</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>Create feature branches</li>
+                            <li>Deploy to isolated workspaces</li>
+                            <li>Test changes safely</li>
+                            <li>Merge strategies</li>
+                        </ul>
+                    </div>
+                    <div class="module-item">
+                        <div class="module-header">
+                            <span class="module-badge">Module 5</span>
+                            <span class="module-duration">60 minutes</span>
+                        </div>
+                        <strong style="font-size: 14px; font-weight: 500;">Deployment Pipelines</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>Configure deployment stages</li>
+                            <li>Set environment variables</li>
+                            <li>Create mapping rules</li>
+                            <li>Automate promotions</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="checkpoint">
+                    <strong style="font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; color: white;">🎯 CHECKPOINT 2</strong>
+                    <p style="font-size: 16px; margin: 8px 0 0 0; color: rgba(255, 255, 255, 0.95);">Deployment pipeline configured and operational</p>
+                </div>
+            </section>
+
+            <!-- Workshop Timeline - CI/CD -->
+            <section>
+                <h2>Session 3: Automation</h2>
+                <h3>CI/CD Pipeline Implementation (2:00 PM - 5:00 PM)</h3>
+                <div class="module-timeline">
+                    <div class="module-item">
+                        <div class="module-header">
+                            <span class="module-badge">Module 6</span>
+                            <span class="module-duration">45 minutes</span>
+                        </div>
+                        <strong style="font-size: 14px; font-weight: 500;">End-to-End Pipeline</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>Deploy across dev/test/prod</li>
+                            <li>Validate each environment</li>
+                            <li>Monitor deployment status</li>
+                        </ul>
+                    </div>
+                    <div class="module-item">
+                        <div class="module-header">
+                            <span class="module-badge">Module 7</span>
+                            <span class="module-duration">30 minutes</span>
+                        </div>
+                        <strong style="font-size: 14px; font-weight: 500;">Azure DevOps Integration</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>Set up Azure Pipelines</li>
+                            <li>Configure service connections</li>
+                            <li>Automate with YAML</li>
+                        </ul>
+                    </div>
+                    <div class="module-item">
+                        <div class="module-header">
+                            <span class="module-badge">Module 8</span>
+                            <span class="module-duration">45 minutes</span>
+                        </div>
+                        <strong style="font-size: 14px; font-weight: 500;">Schema Evolution</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>Handle column changes</li>
+                            <li>Manage table splits</li>
+                            <li>Data migration patterns</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="checkpoint">
+                    <strong style="font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; color: white;">🎯 CHECKPOINT 3</strong>
+                    <p style="font-size: 16px; margin: 8px 0 0 0; color: rgba(255, 255, 255, 0.95);">Full CI/CD automation achieved</p>
+                </div>
+            </section>
+
+            <!-- Key Tools -->
+            <section>
+                <h2>Technology Stack Deep Dive</h2>
+                <div class="two-column">
+                    <div>
+                        <h3>fabric-cli</h3>
+                        <p>Command-line interface for Fabric automation</p>
+                        <ul>
+                            <li>Deploy workspaces and artifacts</li>
+                            <li>Manage environment configurations</li>
+                            <li>Integrate with CI/CD pipelines</li>
+                        </ul>
+                        <pre><code class="bash"># Quick Example
+pip install fabric-cli
+fabric workspace deploy \
+  --source ./src \
+  --target my-workspace</code></pre>
+                    </div>
+                    <div>
+                        <h3>fabric-cicd</h3>
+                        <p>Best practices and patterns for Fabric DevOps</p>
+                        <ul>
+                            <li>Deployment templates and scripts</li>
+                            <li>Environment management strategies</li>
+                            <li>Testing and validation approaches</li>
+                        </ul>
+                        <pre><code class="bash"># Common Commands
+git status
+git add .
+git commit -m "Update pipeline"
+git push</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Instructor Checkpoints -->
+            <section>
+                <h2>Quality Gates & Milestones</h2>
+                <div class="section-center">
+                    <h3 style="font-size: 18px;">Synchronized Progress Validation</h3>
+                    <p style="font-size: 14px; opacity: 0.8;">Ensuring consistent learning outcomes across all participants</p>
+                </div>
+                <div class="module-timeline">
+                    <div class="checkpoint">
+                        <strong style="font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; color: white;">🎯 CHECKPOINT 1</strong>
+                        <span style="font-size: 12px; color: rgba(255, 255, 255, 0.8);"> — After Module 2</span>
+                        <p style="font-size: 15px; margin: 8px 0 0 0; font-weight: 400; color: rgba(255, 255, 255, 0.95);">Foundation Ready: Medallion architecture deployed, Git sync working</p>
+                    </div>
+                    <div class="checkpoint">
+                        <strong style="font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; color: white;">🎯 CHECKPOINT 2</strong>
+                        <span style="font-size: 12px; color: rgba(255, 255, 255, 0.8);"> — After Module 5</span>
+                        <p style="font-size: 15px; margin: 8px 0 0 0; font-weight: 400; color: rgba(255, 255, 255, 0.95);">Pipeline Working: Deployment pipeline configured, variables set up</p>
+                    </div>
+                    <div class="checkpoint">
+                        <strong style="font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; color: white;">🎯 CHECKPOINT 3</strong>
+                        <span style="font-size: 12px; color: rgba(255, 255, 255, 0.8);"> — After Module 7</span>
+                        <p style="font-size: 15px; margin: 8px 0 0 0; font-weight: 400; color: rgba(255, 255, 255, 0.95);">Automation Ready: Azure DevOps integrated, CI/CD operational</p>
+                    </div>
+                </div>
+                <div class="highlight-box">
+                    <strong style="text-transform: uppercase; letter-spacing: 0.5px; font-size: 14px;">⚠️ CRITICAL</strong>
+                    <p style="margin: 8px 0 0 0;">Wait for instructor confirmation at each checkpoint</p>
+                </div>
+            </section>
+
+            <!-- Troubleshooting -->
+            <section>
+                <h2>Technical Support & Resources</h2>
+                <div class="two-column">
+                    <div>
+                        <h3>Common Issues</h3>
+                        <table style="width: 100%;">
+                            <tr>
+                                <td style="font-size: 13px; padding: 6px 0;"><strong style="font-weight: 500;">Can't connect to Fabric</strong></td>
+                                <td style="font-size: 12px; padding: 6px 0; opacity: 0.8;">Check capacity running + admin rights</td>
+                            </tr>
+                            <tr>
+                                <td style="font-size: 13px; padding: 6px 0;"><strong style="font-weight: 500;">Git sync fails</strong></td>
+                                <td style="font-size: 12px; padding: 6px 0; opacity: 0.8;">Verify workspace linked to correct branch</td>
+                            </tr>
+                            <tr>
+                                <td style="font-size: 13px; padding: 6px 0;"><strong style="font-weight: 500;">Deployment errors</strong></td>
+                                <td style="font-size: 12px; padding: 6px 0; opacity: 0.8;">Check artifact dependencies</td>
+                            </tr>
+                            <tr>
+                                <td style="font-size: 13px; padding: 6px 0;"><strong style="font-weight: 500;">Missing permissions</strong></td>
+                                <td style="font-size: 12px; padding: 6px 0; opacity: 0.8;">Request workspace admin/contributor</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div>
+                        <h3>Need Help?</h3>
+                        <ul>
+                            <li>During Workshop — Ask instructors</li>
+                            <li>Documentation — Detailed steps in each module</li>
+                            <li>Community — Fellow participants</li>
+                            <li>Known Issues — Check troubleshooting guide</li>
+                        </ul>
+                        <div class="checkpoint">
+                            <strong style="text-transform: uppercase; letter-spacing: 0.5px; font-size: 14px; color: white;">💡 Remember</strong>
+                            <p style="margin: 8px 0 0 0; color: rgba(255, 255, 255, 0.95); font-size: 16px;">We're here to help - ask questions anytime</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Success Checklist -->
+            <section>
+                <h2>Performance Metrics</h2>
+                <div class="section-center">
+                    <h3>Achievement Tracking</h3>
+                </div>
+                <div class="two-column">
+                    <div>
+                        <h3>Core Milestones</h3>
+                        <ul>
+                            <li>Environment setup complete</li>
+                            <li>First deployment successful</li>
+                            <li>Made changes through Fabric UI and Git</li>
+                            <li>Created feature branch and workspace</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3>Advanced Achievements</h3>
+                        <ul>
+                            <li>Configured deployment pipeline</li>
+                            <li>Deployed to all environments</li>
+                            <li>Set up Azure DevOps automation</li>
+                            <li>Handled schema changes successfully</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="highlight-box">
+                    <h3 style="font-size: 24px; margin-bottom: 12px;">🏆 Achievement Unlocked</h3>
+                    <p>Complete all milestones to master Fabric CI/CD</p>
+                </div>
+            </section>
+
+            <!-- After the Workshop -->
+            <section>
+                <h2>Post-Workshop Action Plan</h2>
+                <div class="two-column">
+                    <div>
+                        <h3>Next Steps</h3>
+                        <ol>
+                            <li><strong>Apply to Your Projects</strong><br>Use these patterns in your organization</li>
+                            <li><strong>Explore Advanced Scenarios</strong><br>Check additional resources</li>
+                            <li><strong>Share Knowledge</strong><br>Train your team</li>
+                            <li><strong>Contribute</strong><br>Submit improvements to repository</li>
+                        </ol>
+                    </div>
+                    <div>
+                        <h3>Learning Path</h3>
+                        <ol>
+                            <li><strong>Foundation</strong> → Lakehouse/Warehousing workshop</li>
+                            <li><strong>DevOps</strong> → This workshop (Git/CI-CD)</li>
+                            <li><strong>Operations</strong> → Monitoring & optimization</li>
+                            <li><strong>Specialization</strong> → Power BI, Real-Time, etc.</li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="architecture-highlight">
+                    <h3>Future Roadmap</h3>
+                    <p>Coming soon: GitHub Actions, Terraform IaC, Advanced Git patterns, Multi-tenant strategies</p>
+                </div>
+            </section>
+
+            <!-- Let's Begin -->
+            <section class="title-slide">
+                <h1 style="font-size: 56px; margin-bottom: 32px;">Let's Begin</h1>
+                <div class="highlight-box" style="background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border: 2px solid rgba(255, 255, 255, 0.2);">
+                    <h2 style="font-size: 32px; color: white; margin-bottom: 16px;">Your Transformation Journey Starts Now</h2>
+                    <p style="font-size: 20px; color: rgba(255, 255, 255, 0.95);">Ready to revolutionize your data engineering practices?</p>
+                </div>
+                <h3 style="font-size: 24px; font-weight: 500; margin-top: 40px; color: rgba(255, 255, 255, 0.9);">→ Module 1: Environment Setup Awaits</h3>
+                <div class="workshop-stats">
+                    <div class="stat-card">
+                        <div class="stat-number">8</div>
+                        <div class="stat-label">Modules Ahead</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">3</div>
+                        <div class="stat-label">Checkpoints</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">∞</div>
+                        <div class="stat-label">Possibilities</div>
+                    </div>
+                </div>
+                <div style="margin-top: 40px; padding: 20px; background: rgba(255, 255, 255, 0.05); border-radius: 16px;">
+                    <p style="font-size: 18px; color: rgba(255, 255, 255, 0.9); text-align: center; margin: 0;">
+                        <strong style="color: white;">GitHub Repository:</strong> github.com/DaniBunny/Fabric-DE-git-CI-CD-pr
+                    </p>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/plugin/notes/notes.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/plugin/markdown/markdown.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/plugin/highlight/highlight.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'fade',
+            transitionSpeed: 'fast',
+            backgroundTransition: 'slide',
+            mouseWheel: false,
+            hideInactiveCursor: true,
+            hideCursorTime: 3000,
+            slideNumber: true,
+            plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ],
+            width: 1200,
+            height: 700,
+            margin: 0.05,
+            minScale: 0.2,
+            maxScale: 2.0,
+            // Enable scrolling
+            scrollProgress: true
+        });
+
+        // Add some interactive features
+        Reveal.on( 'slidechanged', event => {
+            // Custom logic for slide changes if needed
+            console.log('Slide changed to:', event.indexh);
+
+            // Check if current slide needs scrolling
+            checkSlideOverflow();
+        });
+
+        // Check for overflow and add visual indicators
+        function checkSlideOverflow() {
+            const currentSlide = document.querySelector('.reveal .slides section.present');
+            if (currentSlide) {
+                // Remove previous classes
+                currentSlide.classList.remove('has-overflow', 'scrolled');
+
+                // Check if content overflows
+                if (currentSlide.scrollHeight > currentSlide.clientHeight) {
+                    currentSlide.classList.add('has-overflow');
+
+                    // Add scroll listener to hide indicator
+                    currentSlide.addEventListener('scroll', function() {
+                        if (this.scrollTop > 50) {
+                            this.classList.add('scrolled');
+                        } else {
+                            this.classList.remove('scrolled');
+                        }
+                    });
+                }
+            }
+        }
+
+        // Initial check
+        setTimeout(checkSlideOverflow, 100);
+
+        // Force enable scrolling after Reveal.js initialization
+        Reveal.on('ready', function() {
+            // Override Reveal.js viewport settings
+            const viewport = document.querySelector('.reveal .slides');
+            if (viewport) {
+                viewport.style.overflow = 'visible';
+            }
+
+            // Make all slides scrollable
+            const slides = document.querySelectorAll('.reveal .slides section');
+            slides.forEach(slide => {
+                slide.style.overflowY = 'auto';
+                slide.style.height = '100vh';
+                slide.style.maxHeight = '100vh';
+                slide.style.boxSizing = 'border-box';
+            });
+
+            checkSlideOverflow();
+        });
+
+        // Add keyboard shortcuts for workshop flow
+        document.addEventListener('keydown', function(event) {
+            // Press 'C' to show checkpoints overview
+            if (event.key === 'c' || event.key === 'C') {
+                // Could implement checkpoint overlay
+                console.log('Checkpoint shortcut pressed');
+            }
+
+            // Add arrow keys for scrolling within slides
+            const currentSlide = document.querySelector('.reveal .slides section.present');
+            if (currentSlide && currentSlide.scrollHeight > currentSlide.clientHeight) {
+                if (event.key === 'PageDown' || (event.key === ' ' && event.shiftKey === false)) {
+                    event.preventDefault();
+                    currentSlide.scrollBy({
+                        top: currentSlide.clientHeight * 0.8,
+                        behavior: 'smooth'
+                    });
+                } else if (event.key === 'PageUp' || (event.key === ' ' && event.shiftKey === true)) {
+                    event.preventDefault();
+                    currentSlide.scrollBy({
+                        top: -currentSlide.clientHeight * 0.8,
+                        behavior: 'smooth'
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+</html>

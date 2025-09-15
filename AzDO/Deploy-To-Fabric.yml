@@ -1,0 +1,52 @@
+trigger:
+  branches:
+    include:
+      - test
+      - production
+stages:
+  - stage: Build_Release
+    jobs:
+      - job: Build
+        pool:
+          vmImage: windows-latest
+        steps:
+          - checkout: self
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: "3.12"
+              addToPath: true
+          - script: |
+              pip install fabric-cicd
+            displayName: "Install fabric-cicd"
+          - task: AzureCLI@2
+            displayName: "Deploy Fabric Workspace"
+            inputs:
+              azureSubscription: "SPN00"
+              scriptType: "ps"
+              scriptLocation: "inlineScript"
+              inlineScript: |
+                #### MODIFY VALUES HERE ####
+                $dev_workspace_name = "DEWorkshop_User000"
+                $test_workspace_name = "DEWorkshop_User000_Test"
+                $prod_workspace_name = "DEWorkshop_User000_Prod"
+
+                #### DO NOT MODIFY BELOW THIS LINE ####
+                # Determine workspace name and environment based on branch
+                $branch = "$(Build.SourceBranch)"
+                Write-Host "Branch: $branch"
+
+                if ($branch -eq "refs/heads/test") {
+                    $workspace_name = $test_workspace_name
+                    $environment = "test"
+                } elseif ($branch -eq "refs/heads/production") {
+                    $workspace_name = $prod_workspace_name
+                    $environment = "prod"
+                } else {
+                    $workspace_name = $dev_workspace_name
+                    $environment = "dev"
+                }
+
+                $repository_directory = "$(System.DefaultWorkingDirectory)/DE_Workshop"
+
+                # Execute the Python script with the three required arguments
+                python -u $(System.DefaultWorkingDirectory)/deploy-to-fabric.py --workspace_name "$workspace_name" --repository_directory "$repository_directory" --environment "$environment"

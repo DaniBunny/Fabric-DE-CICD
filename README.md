@@ -214,7 +214,7 @@ We welcome contributions! Please:
 
 ## 📧 Contact & Support
 
-- **Workshop Issues**: [GitHub Issues](https://github.com/your-repo/issues)
+- **Workshop Issues**: [GitHub Issues](https://github.com/DaniBunny/Fabric-DE-CICD/issues)
 - **General Questions**: [Microsoft Fabric Community](https://community.fabric.microsoft.com/)
 - **Documentation**: [Microsoft Fabric Docs](https://docs.microsoft.com/fabric)
 

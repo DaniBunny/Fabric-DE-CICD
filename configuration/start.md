@@ -320,7 +320,7 @@ You have successfully logged in to Microsoft Fabric!
 
 1. **Open the workshop repository:**
    
-   🔗 [https://github.com/DaniBunny/Fabric-DE-git-CI-CD](https://github.com/DaniBunny/Fabric-DE-git-CI-CD)
+   🔗 [https://github.com/DaniBunny/Fabric-DE-CICD](https://github.com/DaniBunny/Fabric-DE-CICD)
 
 2. **Copy it to your machine:**
    
@@ -330,16 +330,16 @@ You have successfully logged in to Microsoft Fabric!
    cd ~/Documents  # or your preferred location
    
    # Clone the repository
-   git clone https://github.com/DaniBunny/Fabric-DE-git-CI-CD.git
+   git clone https://github.com/DaniBunny/Fabric-DE-CICD.git
    
    # Navigate into the cloned directory
-   cd Fabric-DE-git-CI-CD
+   cd Fabric-DE-CICD
    ```
 
    **Option B: Using GitHub Desktop**
    - Download GitHub Desktop from [desktop.github.com](https://desktop.github.com/)
    - Use "Clone a repository from the Internet"
-   - Enter: `https://github.com/DaniBunny/Fabric-DE-git-CI-CD`
+   - Enter: `https://github.com/DaniBunny/Fabric-DE-CICD`
 
    **Option C: Download ZIP (Not recommended for workshop)**
    - Click "Code" → "Download ZIP" on the GitHub repository page
@@ -350,7 +350,7 @@ You have successfully logged in to Microsoft Fabric!
 ### Verify Repository Structure
 Your cloned repository should contain:
 ```
-Fabric-DE-git-CI-CD/
+Fabric-DE-CICD/
 ├── configuration/          # Workshop setup files
 ├── deployment/            # Deployment scripts and guides
 ├── versioning/           # Git workflow guides  
@@ -379,7 +379,7 @@ Fabric-DE-git-CI-CD/
 2. **Open the workshop folder:**
    - **File** → **Open Folder** (WSL/Linux)
    - **File** → **Open** (macOS)
-   - Navigate to and select the `Fabric-DE-git-CI-CD` folder you cloned
+   - Navigate to and select the `Fabric-DE-CICD` folder you cloned
 
 3. **Verify your setup:**
    - VSCode should show the repository files in the Explorer panel

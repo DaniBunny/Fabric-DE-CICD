@@ -121,7 +121,7 @@ The workshop includes **3 mandatory instructor checkpoints** to ensure all parti
 
 ## Key Tools You'll Use
 
-The fabric-cli and fabric-cicd are key tools to harness capabilities of Microsoft Fabric in a DevOps context. To understand the when to use each tool and learn more, read the article [fabric-cli vs fabric-cicd: Capabilities and Use Cases](../Fabric-DE-git-CI-CD-workshop/fabric-cli-and-cicd.md).
+The fabric-cli and fabric-cicd are key tools to harness capabilities of Microsoft Fabric in a DevOps context. To understand the when to use each tool and learn more, read the article [fabric-cli vs fabric-cicd: Capabilities and Use Cases](fabric-cli-and-cicd.md).
 
 ### fabric-cli
 A command-line interface that automates Fabric operations:
@@ -214,7 +214,7 @@ We welcome contributions! Please:
 
 ## 📧 Contact & Support
 
-- **Workshop Issues**: [GitHub Issues](https://github.com/your-repo/issues)
+- **Workshop Issues**: [GitHub Issues](https://github.com/DaniBunny/Fabric-DE-CICD/issues)
 - **General Questions**: [Microsoft Fabric Community](https://community.fabric.microsoft.com/)
 - **Documentation**: [Microsoft Fabric Docs](https://docs.microsoft.com/fabric)
 

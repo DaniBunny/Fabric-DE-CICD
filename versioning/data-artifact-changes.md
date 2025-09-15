@@ -115,7 +115,7 @@ Schema changes in data engineering require different risk management strategies:
 
 ### Creating New Table t5 - Additive Change
 
-**Objective:** Create a new table `t5` using Spark SQL DDL by joining existing tables `t1` and `t2`. This demonstrates a safe additive change deployed through the Azure DevOps pipeline from Module 7.
+**Objective:** Create a new table `t5` using Spark SQL DDL by joining existing tables `t1` and `t3`. This demonstrates a safe additive change deployed through the Azure DevOps pipeline from Module 7.
 
 #### Step 2.1: Development - Manual Testing
 
@@ -129,17 +129,17 @@ Schema changes in data engineering require different risk management strategies:
 
    ```sql
    -- Part 2: Create new table t5 (Additive Schema Change)
-   -- This creates a new analytics table combining t1 and t2 data
+   -- This creates a new analytics table combining t1 and t3 data
    CREATE OR REPLACE TABLE Lakehouse_Silver.dbo.t5 AS
    SELECT 
-       t1.id as entity_id,
-       t1.name,
-       t1.category,
-       t2.region,
-       t2.status,
+       t1.AGE,
+       t1.SEX,
+       t1.BMI,
+       t1.countryOrRegion,
+       t3.holidayName,
        CURRENT_TIMESTAMP() as created_timestamp
    FROM Lakehouse_Silver.dbo.t1 t1
-   INNER JOIN Lakehouse_Silver.dbo.t2 t2 ON t1.id = t2.id;
+   INNER JOIN Lakehouse_Silver.dbo.t3 t3 ON t1.countryOrRegion = t3.countryOrRegion;
    
    -- Validate new table t5
    SELECT COUNT(*) as t5_record_count FROM Lakehouse_Silver.dbo.t5;

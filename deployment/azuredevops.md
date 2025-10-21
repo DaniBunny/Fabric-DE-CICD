@@ -109,48 +109,28 @@ Those actions will trigger the deployment pipeline execution in Azure DevOps Pip
 
 Configuring service principals is a fundamental activity for external orchestration and automation. Service Principals allow trusted access from applications to make modifications in your workspace.
 
-Service principals were already provisioned for this workshop, so you only need to configure them in your Fabric workspaces.
-
-### Service Principal Distribution Table
-
-The following table shows which Service Principal (SPN) each user should configure based on their user number:
-
-| User Range | Service Principal | deploy-to-fabric.yml value |
-|------------|-------------------|----------------------------|
-| CICD.User001-009 | CICD.spn000 | SPN00 |
-| CICD.User010-019 | CICD.spn001 | SPN01 |
-| CICD.User020-029 | CICD.spn002 | SPN02 |
-| CICD.User030-039 | CICD.spn003 | SPN03 |
-| CICD.User040-049 | CICD.spn004 | SPN04 |
-| CICD.User050-059 | CICD.spn005 | SPN05 |
-| CICD.User060-069 | CICD.spn006 | SPN06 |
-| CICD.User070-079 | CICD.spn007 | SPN07 |
-| CICD.User080-089 | CICD.spn008 | SPN08 |
-| CICD.User090-099 | CICD.spn009 | SPN09 |
-| CICD.User100-109 | CICD.spn010 | SPN10 |
-| CICD.User110-119 | CICD.spn011 | SPN11 |
-| CICD.User120-129 | CICD.spn012 | SPN12 |
-| CICD.User130-139 | CICD.spn013 | SPN13 |
-| CICD.User140-149 | CICD.spn014 | SPN14 |
-| CICD.User150-159 | CICD.spn015 | SPN15 |
-| CICD.User160-169 | CICD.spn016 | SPN16 |
-| CICD.User170-179 | CICD.spn017 | SPN17 |
-| CICD.User180-189 | CICD.spn018 | SPN18 |
-| CICD.User190-199 | CICD.spn019 | SPN19 |
-| CICD.User200-209 | CICD.spn020 | SPN20 |
-
 **Instructions:**
-1. **Find your user number** in the User Range column
-2. **Identify your Service Principal** from the corresponding SPN column
-3. **Add the Service Principal as an Admin** to all your workspaces:
+- Create a new service principal (SPN) in your Azure subscription (App registration), keep the client id
+- Under the newly created SPN, generate a new secret and keep the value (it will be used in the following steps)
+- Assign the SPN a reader permission for your Azure subscription
+- In your Azure DevOps project, create a new service conections of type `Azure Resource Manager`:
+    - Identity type: App Registration
+    - Credential: Secret
+    - Environmet: Azure Cloud
+    - Scope Level: subscription
+    - Subscription ID & Name: [Your subscription details]
+    - Application (client) ID: Service Principal Client id
+    - Directory (tenant) ID: Your tenant id
+    - Credential: Service principal key
+    - Client secret: [The generated secret SPN]
+    - Service connection name: `WorkshopConnection`
+    - Grant permission to all pipelines
+
+
+**Add the created Service Principal as an Admin** to all your workspaces:
     - `DEWorkshop_<username>` (Development)
     - `DEWorkshop_<username>_Test` (Test)  
     - `DEWorkshop_<username>_Prod` (Production)
-
-**Example Mappings:**
-- `CICD.User004` → uses `CICD.spn000` (CICD.SPN00)
-- `CICD.User119` → uses `CICD.spn011` (CICD.SPN11)
-- `CICD.User209` → uses `CICD.spn020` (CICD.SPN20)
 
 ### Adding Service Principal to Workspace
 
@@ -165,7 +145,7 @@ For each workspace, follow these steps:
     - Click **Add people or groups**
 
 3. **Add Service Principal**
-    - Enter the Service Principal name: `CICD.spn###` (replace ## with your assigned number)
+    - Enter the Service Principal name
     - Select **Admin** role
     - Click **Add**
 
@@ -210,7 +190,7 @@ Now lets modify the `yml` files.
 1. Open your Azure DevOps repository in the browser tab. (Keep it handy, we'll use it a lot in this module)
 1. Navigate to the **Files** section.
 1. Open `deploy-to-fabric.yml` and click **Edit**.
-1. Update the azureSubscription in line 24 aligned to the first two numbers in your user alias. Use the values from the mapping table above. I.e. CICD.User004 should use SPN00, CICD.User209 should use SPN20, CICD.User119 should use SPN11.  This ensures we spread the load evenly.
+1. Update the azureSubscription in line 24 aligned to the created Azure DevOps service connection: `WorkshopConnection`
 1. Update the values in lines 29-31 with your workspace names, ensuring that they match exactly to the workspace names in Fabric.
 1. Click **Commit changes** to finalize the changes.
 

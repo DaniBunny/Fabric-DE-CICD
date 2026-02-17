@@ -1,0 +1,18 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/variableLibrary/definition/valueSet/1.0.0/schema.json",
+  "name": "Production",
+  "variableOverrides": [
+    {
+      "name": "lakehouse_bronze_table",
+      "value": "Tables/dbo/t3_prod"
+    },
+    {
+      "name": "workspace_id",
+      "value": "b9b84852-77e7-4ae9-b7e7-34952e00fd7d"
+    },
+    {
+      "name": "lakehouse_bronze_id",
+      "value": "a1752035-7f15-4b50-86a5-8d61328046c9"
+    }
+  ]
+}

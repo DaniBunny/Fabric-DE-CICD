@@ -1,0 +1,32 @@
+find_replace:
+    # Replace Bronze Lakehouse in Notebooks
+    - find_value: "90496dd7-f76f-48a5-a650-5d23ad5f30f9" # Item Id of Lakehouse_Bronze in Dev workspace
+      replace_value:
+        _ALL_: "$items.Lakehouse.Lakehouse_Bronze.id"
+      item_type: "Notebook"
+    
+    # Replace Silver Lakehouse in Notebooks
+    - find_value: "a003166c-2062-4393-9b51-6ad35f879e1c" # Item Id of Lakehouse_Silver in Dev workspace
+      replace_value:
+        _ALL_: "$items.Lakehouse.Lakehouse_Silver.id"
+      item_type: "Notebook"
+
+    # Replace Dev Workspace Id in Notebooks
+    - find_value: "ea04f522-3baa-4555-9dc5-9217ae1bdf40" # Workspace Id of Dev Workspace
+      replace_value:
+        _ALL_: "$workspace.id"
+      item_type: "Notebook"
+      
+    # Replace Connection String in Semantic Model
+    - find_value: 'database\s*=\s*Sql\.Database\s*\(\s*"([^"]+)"'
+      replace_value:
+          _ALL_: "$items.Lakehouse.Lakehouse_Silver.sqlendpoint"
+      is_regex: "true"
+      item_type: "SemanticModel"
+      
+    # Replace Database ID in Semantic Model with Database Name
+    - find_value: 'database\s*=\s*Sql\.Database\s*\(\s*"[^"]+"\s*,\s*"([^"]+)"'
+      replace_value:
+          _ALL_: "Lakehouse_Silver"
+      is_regex: "true"
+      item_type: "SemanticModel"

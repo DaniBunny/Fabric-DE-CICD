@@ -1,0 +1,26 @@
+[
+  {
+    "name": "t3",
+    "path": "/Tables/dbo",
+    "target": {
+      "type": "OneLake",
+      "oneLake": {
+        "path": "$(/**/MyVarLib/lakehouse_bronze_table)",
+        "itemId": "$(/**/MyVarLib/lakehouse_bronze_id)",
+        "workspaceId": "$(/**/MyVarLib/workspace_id)"
+      }
+    }
+  },
+  {
+    "name": "t2",
+    "path": "/Tables/dbo",
+    "target": {
+      "type": "OneLake",
+      "oneLake": {
+        "path": "Tables/dbo/t2",
+        "itemId": "$(/**/MyVarLib/lakehouse_bronze_id)",
+        "workspaceId": "$(/**/MyVarLib/workspace_id)"
+      }
+    }
+  }
+]

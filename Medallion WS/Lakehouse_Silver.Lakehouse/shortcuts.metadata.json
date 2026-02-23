@@ -18,8 +18,7 @@
       "type": "OneLake",
       "oneLake": {
         "path": "Tables/dbo/t2",
-        "itemId": "$(/**/MyVarLib/lakehouse_bronze_id)",
-        "workspaceId": "$(/**/MyVarLib/workspace_id)"
+        "itemReference": "$(/**/MyVarLib/lakehouse_bronze_item)"
       }
     }
   }

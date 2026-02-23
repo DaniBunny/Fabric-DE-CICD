@@ -18,6 +18,15 @@
       "note": "",
       "type": "String",
       "value": "Tables/dbo/t3_dev"
+    },
+    {
+      "name": "lakehouse_bronze_item",
+      "note": "",
+      "type": "ItemReference",
+      "value": {
+        "itemId": "3ace3676-f9b1-4423-82b6-ac293f9504a4",
+        "workspaceId": "cc9468fb-af0f-45e6-9b77-53231caa838d"
+      }
     }
   ]
 }

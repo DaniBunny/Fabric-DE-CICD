@@ -13,6 +13,13 @@
     {
       "name": "lakehouse_bronze_id",
       "value": "a1752035-7f15-4b50-86a5-8d61328046c9"
+    },
+    {
+      "name": "lakehouse_bronze_item",
+      "value": {
+        "itemId": "779bbfb7-2225-4005-92ff-4af4e7a7ebe4",
+        "workspaceId": "63cf9228-c450-4776-b6b3-7893ca48c722"
+      }
     }
   ]
 }
